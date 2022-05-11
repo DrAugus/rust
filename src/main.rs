@@ -1,3 +1,10 @@
+use std::fmt::{Display, format};
+use std::process::Output;
+use num::complex::Complex;
+use rand::prelude::*;
+use rand::{thread_rng, Rng};
+use std::ops::Add;
+
 const MAX_DAMAGE: u64 = 21_474_836_473;
 const MAX_LEVEL: u8 = 90;
 
@@ -265,10 +272,6 @@ fn loops() {
     println!();
 }
 
-use std::fmt::format;
-use num::complex::Complex;
-use crate::Weapons::Sword;
-
 fn num_use() {
     let a = Complex { re: 2.1, im: -1.2 };
     let b = Complex::new(11.1, 22.2);
@@ -368,7 +371,7 @@ fn character_test() {
         atk: 999,
         def: 999,
     };
-    let character1 = Character::new(1, 1, 1, Sword, stats);
+    let character1 = Character::new(1, 1, 1, Weapons::Sword, stats);
     let character2 = Character {
         id: 3,
         name: character1.name,
@@ -386,7 +389,24 @@ fn character_test() {
 
 struct Color(u8, u8, u8);
 
-struct Point(f64, f64, f64);
+// 为Point结构体派生Debug特征，用于格式化输出
+#[derive(Debug)]
+struct Point<T: Add<T, Output=T>> {
+    x: T,
+    y: T,
+    z: T,
+}
+
+impl<T: Add<T, Output=T>> Add for Point<T> {
+    type Output = Point<T>;
+    fn add(self, p: Point<T>) -> Point<T> {
+        Point {
+            x: add(self.x, p.x),
+            y: add(self.y, p.y),
+            z: add(self.z, p.z),
+        }
+    }
+}
 
 enum IpAddress {
     Ipv4Address(String),
@@ -474,7 +494,7 @@ fn show_direction(d: Direction) -> &'static str {
 
 enum Action {
     Say(String),
-    MoveTo(Point, Point),
+    MoveTo(Point<f32>, Point<f32>),
     ChangeColor(Color),
     Loading(bool),
 }
@@ -483,8 +503,7 @@ fn op_action(op: Action) {
     match op {
         Action::Say(s) => println!("{}", s),
         Action::MoveTo(x, y) => {
-            println!("point from ({},{},{}) move to ({},{},{})",
-                     x.0, x.1, x.2, y.0, y.1, y.2);
+            println!("point from ({:?}) move to ({:?})", x, y);
         }
         Action::ChangeColor(c) => {
             println!("change color into (r:{}, g:{}, b:{}))",
@@ -507,8 +526,6 @@ fn match_number(x: i32) {
     }
 }
 
-fn condition_expression(e: Option<bool>) {}
-
 struct Circle {
     x: f64,
     y: f64,
@@ -526,6 +543,9 @@ impl Circle {
 
 pub trait SocialPlatform {
     fn social_info(&self) -> String;
+    fn send_msg(&self) -> String {
+        format!("holy shit")
+    }
 }
 
 pub struct WeChat {
@@ -542,13 +562,33 @@ impl SocialPlatform for WeChat {
         format!("nickname: {}, wx_id: {}, district: {}, gender: {}, about: {}",
                 self.nickname, self.wx_id, self.district, self.gender, self.about)
     }
+    fn send_msg(&self) -> String {
+        format!("msg by {}", self.nickname)
+    }
 }
 
-use rand::prelude::*;
-use rand::{thread_rng, Rng};
+// 使用特征作为函数参数
+pub fn show_msg(item: &impl SocialPlatform) {
+    println!("NEW MESSAGE: {}", item.send_msg())
+}
+
+// 特征约束(trait bound) T: SocialPlatform
+pub fn show_msg_all<T: SocialPlatform>(item1: &T, item2: &T) {
+    println!("NEW MESSAGE: item1: {}, item2: {}", item1.send_msg(), item2.send_msg())
+}
+
+pub fn multi_bound_use1(item: &(impl SocialPlatform + Display)) {
+    println!("NEW MESSAGE: {}", item.send_msg())
+}
+
+pub fn multi_bound_use2<T: SocialPlatform + Display>(item: &T) {
+    println!("NEW MESSAGE: {}", item.send_msg())
+}
+
+// where 约束 不再展开
 
 fn random_use() {
-    let mut rng = rand::thread_rng();
+    let mut rng = thread_rng();
 
     // Arrays (up to 32 elements): each element is generated sequentially;
     // see also Rng::fill which supports arbitrary array length for integer types and
@@ -575,7 +615,7 @@ fn random_string(len: usize) -> String {
         ascii_value[i] = (i + 87) as u8;
     }
 
-    let mut rng = rand::thread_rng();
+    let mut rng = thread_rng();
 
     let mut vec_index: Vec<_> = Vec::new();
     for _ in 0..=len {
@@ -648,7 +688,7 @@ impl QQ {
     fn new(nickname: String, district: String, gender: String, about: String, birthday: String) -> QQ {
         QQ {
             nickname,
-            qq_number: rand::random::<u32>(),
+            qq_number: random::<u32>(),
             district,
             gender,
             about,
@@ -657,15 +697,15 @@ impl QQ {
     }
 }
 
-// fn largest<T: std::cmp::PartialOrd>(list: &[T]) -> T {
-//     let mut largest = list[0];
-//     for &item in list.iter() {
-//         if item > largest {
-//             largest = item;
-//         }
-//     }
-//     largest
-// }
+fn largest<T: PartialOrd + Copy>(list: &[T]) -> T {
+    let mut largest = list[0];
+    for &item in list.iter() {
+        if item > largest {
+            largest = item;
+        }
+    }
+    largest
+}
 
 
 fn main() {
@@ -684,8 +724,8 @@ fn main() {
 
     let actions = [
         Action::Say("hi".to_string()),
-        Action::MoveTo(Point(2.0, 3.0, 4.0),
-                       Point(3.0, 4.0, 5.0)),
+        Action::MoveTo(Point { x: 2.0, y: 3.0, z: 1.0 },
+                       Point { x: 2.0, y: 3.0, z: 1.0 }),
         Action::ChangeColor(Color(2, 3, 4)),
     ];
     for action in actions {
@@ -725,6 +765,11 @@ fn main() {
     println!("new_qq: {}", new_qq.social_info());
     println!("new_wx: {}", new_wx.social_info());
 
+    show_msg(&new_qq);
+    show_msg(&new_wx);
+
+    show_msg_all(&new_qq, &new_qq);
+
     let arr_find_largest = [1, 2, 3, 4, 9, 6, 1];
-    // dbg!(largest(&arr_find_largest)) ;
+    dbg!(largest(&arr_find_largest));
 }
