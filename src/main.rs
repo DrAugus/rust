@@ -265,6 +265,7 @@ fn loops() {
     println!();
 }
 
+use std::fmt::format;
 use num::complex::Complex;
 use crate::Weapons::Sword;
 
@@ -281,89 +282,6 @@ fn tuple_use() {
     println!("x: {}, y: {}, z: {}", x, y, z);
     println!("tup0: {}, tup1: {}, tup2: {}", tup.0, tup.1, tup.2);
 }
-
-enum PokerCard {
-    Clubs(u8),
-    Spades(u8),
-    Diamonds(u8),
-    Hearts(u8),
-}
-
-#[derive(Debug)]
-enum Weapons {
-    Sword,
-    Bow,
-    Polearm,
-    Claymore,
-    Catalyst,
-}
-
-#[derive(Debug)]
-struct Stats {
-    hp: i32,
-    atk: i32,
-    def: i32,
-}
-
-
-enum EnumCharacter {
-    ID(i32),
-    Name(i32),
-    Rarity(i32),
-    Weapon(Weapons),
-    Stats(Stats),
-}
-
-#[derive(Debug)]
-// Rust 不支持将某个结构体某个字段标记为可变。
-struct Character {
-    id: i32,
-    name: i32,
-    rarity: i32,
-    weapon: Weapons,
-    stats: Stats,
-}
-
-fn build_character(
-    id: i32,
-    name: i32,
-    rarity: i32,
-    weapon: Weapons,
-    stats: Stats) -> Character {
-    Character {
-        id,
-        name,
-        rarity,
-        weapon,
-        stats,
-    }
-}
-
-fn character_test() {
-    let stats = Stats {
-        hp: 999,
-        atk: 999,
-        def: 999,
-    };
-    let character1 = build_character(1, 1, 1, Sword, stats);
-    let character2 = Character {
-        id: 3,
-        name: character1.name,
-        rarity: character1.rarity,
-        weapon: character1.weapon,
-        stats: character1.stats,
-    };// character1 无法再被使用
-    let character3 = Character {
-        id: 2,
-        ..character2
-    };// character2 无法再被使用
-
-    println!("character3 {:#?}", character3);
-}
-
-struct Color(i32, i32, i32);
-
-struct Point(i32, i32, i32);
 
 fn array() {
     let a = [3; 5];
@@ -399,15 +317,116 @@ fn array() {
     }
 }
 
+enum PokerCard {
+    Clubs(u8),
+    Spades(u8),
+    Diamonds(u8),
+    Hearts(u8),
+}
+
+#[derive(Debug)]
+enum Weapons {
+    Sword,
+    Bow,
+    Polearm,
+    Claymore,
+    Catalyst,
+}
+
+#[derive(Debug)]
+struct Stats {
+    hp: i32,
+    atk: i32,
+    def: i32,
+}
+
+#[derive(Debug)]
+// Rust 不支持将某个结构体某个字段标记为可变。
+struct Character {
+    id: i32,
+    name: i32,
+    rarity: i32,
+    weapon: Weapons,
+    stats: Stats,
+}
+
+impl Character {
+    fn new(id: i32, name: i32, rarity: i32, weapon: Weapons, stats: Stats) -> Character {
+        Character {
+            id,
+            name,
+            rarity,
+            weapon,
+            stats,
+        }
+    }
+}
+
+fn character_test() {
+    let stats = Stats {
+        hp: 999,
+        atk: 999,
+        def: 999,
+    };
+    let character1 = Character::new(1, 1, 1, Sword, stats);
+    let character2 = Character {
+        id: 3,
+        name: character1.name,
+        rarity: character1.rarity,
+        weapon: character1.weapon,
+        stats: character1.stats,
+    };// character1 无法再被使用
+    let character3 = Character {
+        id: 2,
+        ..character2
+    };// character2 无法再被使用
+
+    println!("character3 {:#?}", character3);
+}
+
+struct Color(u8, u8, u8);
+
+struct Point(f64, f64, f64);
+
 enum IpAddress {
     Ipv4Address(String),
     Ipv6Address(String),
 }
 
-// TODO 地址校验
-fn ip_switch(address: &String, standard: bool) -> String {
+fn check_ipv4_address(address: &String) -> ([u8; 4], bool) {
     let mut is_ipv4 = false;
     if address.contains('.') { is_ipv4 = true }
+    if !is_ipv4 { return ([0, 0, 0, 0], false); }
+
+    let mut temp = address;
+    let mut index_arr = [0; 3];
+    let mut index = 0;
+    for (i, char) in temp.chars().enumerate() {
+        if char == '.' {
+            index_arr[index] = i;
+            index = index + 1;
+        }
+    }
+    dbg!(index_arr);
+    let mut value_ipv4 = [
+        temp[0..index_arr[0]].parse().unwrap(),
+        temp[index_arr[0] + 1..index_arr[1]].parse().unwrap(),
+        temp[index_arr[1] + 1..index_arr[2]].parse().unwrap(),
+        temp[index_arr[2] + 1..temp.len()].parse().unwrap(),
+    ];
+    dbg!(value_ipv4);
+    for i in value_ipv4 {
+        if i > 255 || i < 1 {
+            ([0, 0, 0, 0], false);
+        }
+    }
+    (value_ipv4, true)
+}
+
+fn ip_switch(address: &String, standard: bool) -> String {
+    let check_ipv4 = check_ipv4_address(address);
+    let mut is_ipv4 = check_ipv4.1;
+    let ipv4_value = check_ipv4.0;
 
     let mut res: String = str2string("");
 
@@ -416,25 +435,7 @@ fn ip_switch(address: &String, standard: bool) -> String {
             res = str2string("::") + address;
             dbg!(&res);
         } else {
-            let mut temp = address;
-            let mut index_arr = [0; 3];
-            let mut index = 0;
-            for (i, char) in temp.chars().enumerate() {
-                if char == '.' {
-                    index_arr[index] = i;
-                    index = index + 1;
-                }
-            }
-            dbg!(index_arr);
-            let mut value_ipv4 = [
-                temp[0..index_arr[0]].parse::<u8>().unwrap(),
-                temp[index_arr[0] + 1..index_arr[1]].parse::<u8>().unwrap(),
-                temp[index_arr[1] + 1..index_arr[2]].parse::<u8>().unwrap(),
-                temp[index_arr[2] + 1..temp.len()].parse::<u8>().unwrap(),
-            ];
-            dbg!(value_ipv4);
-
-            for mut i in value_ipv4 {
+            for mut i in ipv4_value {
                 res += &*format!("{:02X}", i);
             }
             res.insert(4, ':');
@@ -445,9 +446,226 @@ fn ip_switch(address: &String, standard: bool) -> String {
         dbg!("ipv6 waiting");
     }
 
-
     return res;
 }
+
+enum Direction {
+    East,
+    West,
+    North,
+    South,
+    SouthEast,
+    SouthWest,
+    NorthEast,
+    NorthWest,
+}
+
+fn show_direction(d: Direction) -> &'static str {
+    match d {
+        Direction::East => "East",
+        Direction::SouthEast | Direction::SouthWest => "South",
+        Direction::North => {
+            println!("厚礼蟹");
+            "North"
+        }
+        _ => "other",
+    }
+}
+
+enum Action {
+    Say(String),
+    MoveTo(Point, Point),
+    ChangeColor(Color),
+    Loading(bool),
+}
+
+fn op_action(op: Action) {
+    match op {
+        Action::Say(s) => println!("{}", s),
+        Action::MoveTo(x, y) => {
+            println!("point from ({},{},{}) move to ({},{},{})",
+                     x.0, x.1, x.2, y.0, y.1, y.2);
+        }
+        Action::ChangeColor(c) => {
+            println!("change color into (r:{}, g:{}, b:{}))",
+                     c.0, c.1, c.2);
+        }
+        _ => {
+            println!("loading");
+        }
+    }
+}
+
+// In addition to number, you can also match char
+fn match_number(x: i32) {
+    match x {
+        0 => println!("zero"),
+        1..=9 if x < 5 => println!("one through 4"),
+        1..=9 => println!("one through 9"),
+        11 | 22 | 33 => println!("{}", x),
+        _ => println!("else: {}", x)
+    }
+}
+
+fn condition_expression(e: Option<bool>) {}
+
+struct Circle {
+    x: f64,
+    y: f64,
+    radius: f64,
+}
+
+// Self 指代被实现方法的结构体类型，self 指代此类型的实例
+impl Circle {
+    fn new(x: f64, y: f64, radius: f64) -> Circle {
+        Circle { x, y, radius }
+    }
+
+    fn area(&self) -> f64 { std::f64::consts::PI * (self.radius * self.radius) }
+}
+
+pub trait SocialPlatform {
+    fn social_info(&self) -> String;
+}
+
+pub struct WeChat {
+    pub nickname: String,
+    pub wx_id: String,
+    //wxid_ + 14位初始 小写字母与数字混合
+    pub district: String,
+    pub gender: String,
+    pub about: String,
+}
+
+impl SocialPlatform for WeChat {
+    fn social_info(&self) -> String {
+        format!("nickname: {}, wx_id: {}, district: {}, gender: {}, about: {}",
+                self.nickname, self.wx_id, self.district, self.gender, self.about)
+    }
+}
+
+use rand::prelude::*;
+use rand::{thread_rng, Rng};
+
+fn random_use() {
+    let mut rng = rand::thread_rng();
+
+    // Arrays (up to 32 elements): each element is generated sequentially;
+    // see also Rng::fill which supports arbitrary array length for integer types and
+    // tends to be faster for u32 and smaller types.
+    let mut arr2 = [0u8; 2];
+    rng.fill(&mut arr2);
+
+    dbg!(arr2);
+}
+
+// 仅包含数字0-9和字母a-z 长度36
+fn random_string(len: usize) -> String {
+
+    // 65-90 A-Z
+    // 97-122 a-z
+    // 纯字母是 3*len 的总长度, len为14 即总长42位
+    // 纯数字是 1*len 的总长度, len为14 即总长14位
+
+    let mut ascii_value: [u8; 36] = [0; 36];
+    for i in 0..=9 {
+        ascii_value[i] = i as u8;
+    }
+    for i in 10..=35 {
+        ascii_value[i] = (i + 87) as u8;
+    }
+
+    let mut rng = rand::thread_rng();
+
+    let mut vec_index: Vec<_> = Vec::new();
+    for _ in 0..=len {
+        vec_index.push(rng.gen_range(0..36));
+    }
+
+    let mut res = "".to_string();
+    for item in vec_index {
+        res += &ascii2string(ascii_value[item]).to_string()
+    }
+
+    dbg!(&res);
+    res.to_string()
+}
+
+fn ascii2string(v: u8) -> String {
+    let supper_alpha = [
+        "A", "B", "C", "D", "E", "F", "G",
+        "H", "I", "J", "K", "L", "M", "N",
+        "O", "P", "Q", "R", "S", "T",
+        "U", "V", "W", "X", "Y", "Z"
+    ];
+    let lower_alpha = [
+        "a", "b", "c", "d", "e", "f", "g",
+        "h", "i", "j", "k", "l", "m", "n",
+        "o", "p", "q", "r", "s", "t",
+        "u", "v", "w", "x", "y", "z"
+    ];
+
+    match v {
+        0..=9 => v.to_string(),
+        65..=90 => supper_alpha[(v - 65) as usize].to_string(),
+        97..=122 => lower_alpha[(v - 97) as usize].to_string(),
+        _ => {
+            println!("waiting");
+            "".to_string()
+        }
+    }
+}
+
+impl WeChat {
+    fn new(nickname: String, district: String, gender: String, about: String) -> WeChat {
+        WeChat {
+            nickname,
+            wx_id: "wxid_".to_owned() + &random_string(14),
+            district,
+            gender,
+            about,
+        }
+    }
+}
+
+pub struct QQ {
+    pub nickname: String,
+    pub qq_number: u32,
+    pub district: String,
+    pub gender: String,
+    pub about: String,
+    pub birthday: String,
+}
+
+impl SocialPlatform for QQ {
+    fn social_info(&self) -> String {
+        format!("nickname: {}, qq_number: {}, district: {}, gender: {}, about: {}, birthday: {}",
+                self.nickname, self.qq_number, self.district, self.gender, self.about, self.birthday)
+    }
+}
+
+impl QQ {
+    fn new(nickname: String, district: String, gender: String, about: String, birthday: String) -> QQ {
+        QQ {
+            nickname,
+            qq_number: rand::random::<u32>(),
+            district,
+            gender,
+            about,
+            birthday,
+        }
+    }
+}
+
+// fn largest<T: std::cmp::PartialOrd>(list: &[T]) -> T {
+//     let mut largest = list[0];
+//     for &item in list.iter() {
+//         if item > largest {
+//             largest = item;
+//         }
+//     }
+//     largest
+// }
 
 
 fn main() {
@@ -455,6 +673,24 @@ fn main() {
         "Genshin MAX_DAMAGE: {} MAX_LEVEL: {}",
         MAX_DAMAGE, MAX_LEVEL
     );
+    random_use();
+
+    let say_it = Action::Say("unwrap".to_string());
+    // 当你只要匹配一个条件，且忽略其他条件时就用 if let ，否则都用 match。
+    if let Action::Say(s) = say_it {
+        println!("hit! {}", s);
+    }
+    // matches 暂不展开
+
+    let actions = [
+        Action::Say("hi".to_string()),
+        Action::MoveTo(Point(2.0, 3.0, 4.0),
+                       Point(3.0, 4.0, 5.0)),
+        Action::ChangeColor(Color(2, 3, 4)),
+    ];
+    for action in actions {
+        op_action(action);
+    }
 
     ip_switch(&str2string("127.0.0.1"), true);
 
@@ -464,15 +700,31 @@ fn main() {
     greet_world();
     small_scale_chopper();
     variables();
+    str_slice();
+    str_gone();
+    str_replace();
+    str_delete();
     pattern_matching();
     loops();
     num_use();
-    str_gone();
-    str_slice();
-    str_replace();
-    str_delete();
     tuple_use();
     array();
 
     character_test();
+
+    let new_qq = QQ::new("holy".to_string(),
+                         "UK".to_string(),
+                         "male".to_string(),
+                         "I am unstoppable".to_string(),
+                         "3/2".to_string());
+    let new_wx = WeChat::new("nick".to_string(),
+                             "Italian".to_string(),
+                             "female".to_string(),
+                             "gette".to_string());
+
+    println!("new_qq: {}", new_qq.social_info());
+    println!("new_wx: {}", new_wx.social_info());
+
+    let arr_find_largest = [1, 2, 3, 4, 9, 6, 1];
+    // dbg!(largest(&arr_find_largest)) ;
 }
