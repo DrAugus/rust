@@ -238,7 +238,7 @@ fn makes_int_copy(int: i32) {
     println!("makes_int_copy {}", int);
 }
 
-fn add(i: i32, j: i32) -> i32 {
+fn add<T: std::ops::Add<Output=T>>(i: T, j: T) -> T {
     i + j
 }
 
