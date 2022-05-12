@@ -1,3 +1,4 @@
+use std::fmt;
 use std::fmt::{Display, format};
 use std::process::Output;
 use num::complex::Complex;
@@ -707,6 +708,44 @@ fn largest<T: PartialOrd + Copy>(list: &[T]) -> T {
     largest
 }
 
+#[derive(Debug, PartialEq)]
+enum FileState {
+    Open,
+    Closed,
+}
+
+#[derive(Debug)]
+struct File {
+    name: String,
+    data: Vec<u8>,
+    state: FileState,
+}
+
+impl Display for FileState {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        match *self {
+            FileState::Open => write!(f, "OPEN"),
+            FileState::Closed => write!(f, "CLOSED"),
+        }
+    }
+}
+
+impl Display for File {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(f, "<{} ({})>", self.name, self.state)
+    }
+}
+
+impl File {
+    fn new(name: String) -> File {
+        File {
+            name,
+            data: Vec::new(),
+            state: FileState::Closed,
+        }
+    }
+}
+
 
 fn main() {
     println!(
@@ -714,6 +753,10 @@ fn main() {
         MAX_DAMAGE, MAX_LEVEL
     );
     random_use();
+
+    let file1 = File::new("file1.txt".to_string());
+    println!("{:?}", file1);
+    println!("{}", file1);
 
     let say_it = Action::Say("unwrap".to_string());
     // 当你只要匹配一个条件，且忽略其他条件时就用 if let ，否则都用 match。
