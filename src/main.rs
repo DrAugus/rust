@@ -1,13 +1,7 @@
-use std::collections::HashMap;
 use std::fmt;
-use std::fmt::{Display, format};
+use std::fmt::{Display};
 use std::hash::Hash;
-use std::process::Output;
-use num::complex::Complex;
-use rand::prelude::*;
-use rand::{thread_rng, Rng};
 use std::ops::Add;
-
 
 mod genshin;
 mod hello;
@@ -335,72 +329,6 @@ impl Animal for Cat {
     }
 }
 
-fn read_change_vec() {
-    // 若预先知道大小可以使用 with_capacity 避免频繁的内存分配和拷贝，提升性能
-    let _v: Vec<i32> = Vec::with_capacity(3);
-
-    let v = vec![1, 2, 3, 4, 5, 6, 7, 8, 9];
-    let forth: &i32 = &v[3];
-    println!("forth value is {}", forth);
-
-    // 对于get 需要用 match 匹配
-    match v.get(5) {
-        Some(sixth) => println!("sixth value is {}", sixth),
-        None => println!("no sixth value"),
-    }
-    match v.get(11) {
-        Some(eleventh) => println!("eleventh value is {}", eleventh),
-        None => println!("no eleventh value"),
-    }
-
-    let mut v2 = v;
-    for i in &mut v2 {
-        *i += 10
-    }
-    dbg!(v2);
-}
-
-fn use_hashmap() {
-    // 若预先知道大小可以使用 with_capacity 避免频繁的内存分配和拷贝，提升性能
-    let _hm: HashMap<String, i32> = HashMap::with_capacity(3);
-
-    let mut gems = HashMap::new();
-    gems.insert("red gems", 1);
-    gems.insert("green gems", 2);
-    gems.insert("blue gems", 3);
-
-    let lang_list = vec![
-        ("English".to_string(), 1),
-        ("French".to_string(), 2),
-        ("German".to_string(), 3),
-    ];
-    let lang_map: HashMap<_, _> = lang_list.into_iter().collect();
-    dbg!(&lang_map);
-
-    let lan_name = "English".to_string();
-    let num: Option<&i32> = lang_map.get(&lan_name);
-    dbg!(num);
-
-    for (k, v) in &lang_map {
-        println!("{}:{} ", k, v);
-    }
-
-    let mut scores = HashMap::new();
-    scores.insert("Blue", 10);
-    // 覆盖已有的值
-    let old = scores.insert("Blue", 20);
-    assert_eq!(old, Some(10));
-    // 查询新插入的值
-    let new = scores.get("Blue");
-    assert_eq!(new, Some(&20));
-    // 查询Yellow对应的值，若不存在则插入新值
-    let v = scores.entry("Yellow").or_insert(5);
-    assert_eq!(*v, 5); // 不存在，插入5
-    // 查询Yellow对应的值，若不存在则插入新值
-    let v = scores.entry("Yellow").or_insert(50);
-    assert_eq!(*v, 5); // 已经存在，因此50没有插入
-}
-
 fn main() {
     social_info::random_use();
 
@@ -460,10 +388,7 @@ fn main() {
 
     hello::greet_world();
     small_scale_chopper();
-    variables::variables();
-    variables::num_use();
-    variables::tuple_use();
-    variables::array();
+
     str::str_slice();
     str::str_gone();
     str::str_replace();
@@ -487,6 +412,5 @@ fn main() {
     // 完全限定语法 定义  <Type as Trait>::function(receiver_if_method, next_arg, ...);
     println!("A babe cat is called a {}", <Cat as Animal>::babe_name());
 
-    read_change_vec();
-    use_hashmap();
+    variables::variables();
 }

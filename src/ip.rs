@@ -36,7 +36,7 @@ fn check_ipv4_address(address: &String) -> ([u8; 4], bool) {
 
 pub(crate) fn ip_switch(address: &String, standard: bool) -> String {
     let check_ipv4 = check_ipv4_address(address);
-    let mut is_ipv4 = check_ipv4.1;
+    let is_ipv4 = check_ipv4.1;
     let ipv4_value = check_ipv4.0;
 
     let mut res: String = "".to_string();
@@ -46,7 +46,7 @@ pub(crate) fn ip_switch(address: &String, standard: bool) -> String {
             res = "::".to_string() + address;
             dbg!(&res);
         } else {
-            for mut i in ipv4_value {
+            for i in ipv4_value {
                 res += &*format!("{:02X}", i);
             }
             res.insert(4, ':');

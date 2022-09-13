@@ -1,6 +1,7 @@
 use std::fmt::Display;
 use rand::{random, Rng, thread_rng};
 
+// 定义特征
 pub trait SocialPlatform {
     fn social_info(&self) -> String;
     fn send_msg(&self) -> String {
@@ -17,6 +18,7 @@ pub struct WeChat {
     pub about: String,
 }
 
+// 为类型实现特征
 impl SocialPlatform for WeChat {
     fn social_info(&self) -> String {
         format!("nickname: {}, wx_id: {}, district: {}, gender: {}, about: {}",
@@ -142,6 +144,12 @@ impl SocialPlatform for QQ {
         format!("nickname: {}, qq_number: {}, district: {}, gender: {}, about: {}, birthday: {}",
                 self.nickname, self.qq_number, self.district, self.gender, self.about, self.birthday)
     }
+}
+
+// 使用特征作为函数参数
+// 特征约束(trait bound) T: SocialPlatform
+pub fn notify<T: SocialPlatform>(item: &T) {
+    println!("Breaking news! {}", item.send_msg());
 }
 
 impl QQ {

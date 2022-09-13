@@ -1,6 +1,7 @@
+use std::collections::HashMap;
 use num::Complex;
 
-pub(crate) fn variables() {
+fn basics() {
     let mut x = 5;
     println!("The value of x is: {}", x);
     x = 6;
@@ -72,21 +73,21 @@ pub(crate) fn variables() {
 }
 
 
-pub(crate) fn num_use() {
+fn num_use() {
     let a = Complex { re: 2.1, im: -1.2 };
     let b = Complex::new(11.1, 22.2);
     let res = a + b;
     println!("{} + {}i", res.re, res.im);
 }
 
-pub(crate) fn tuple_use() {
+fn tuple_use() {
     let tup: (i32, f64, u8) = (500, 6.4, 1);
     let (x, y, z) = tup;
     println!("x: {}, y: {}, z: {}", x, y, z);
     println!("tup0: {}, tup1: {}, tup2: {}", tup.0, tup.1, tup.2);
 }
 
-pub(crate) fn array() {
+fn array() {
     let a = [3; 5];
     for i in 1..=5 {
         print!("{} ", i);
@@ -103,7 +104,7 @@ pub(crate) fn array() {
     let a = a[1];
     println!("a: {}", a);
 
-    let mut a: [i32; 5] = [1, 2, 3, 4, 4];
+    let a: [i32; 5] = [1, 2, 3, 4, 4];
     for mut i in a {
         if i % 2 == 0 { i = i + 1 };
         print!("{} ", i);
@@ -118,4 +119,81 @@ pub(crate) fn array() {
     for _ in 0..5 {
         println!("this is China!")
     }
+}
+
+fn read_change_vec() {
+    // 若预先知道大小可以使用 with_capacity 避免频繁的内存分配和拷贝，提升性能
+    let _v: Vec<i32> = Vec::with_capacity(3);
+
+    let v = vec![1, 2, 3, 4, 5, 6, 7, 8, 9];
+    let forth: &i32 = &v[3];
+    println!("forth value is {}", forth);
+
+    // 对于get 需要用 match 匹配
+    match v.get(5) {
+        Some(sixth) => println!("sixth value is {}", sixth),
+        None => println!("no sixth value"),
+    }
+    match v.get(11) {
+        Some(eleventh) => println!("eleventh value is {}", eleventh),
+        None => println!("no eleventh value"),
+    }
+
+    let mut v2 = v;
+    for i in &mut v2 {
+        *i += 10
+    }
+    dbg!(v2);
+}
+
+fn use_hashmap() {
+    // 若预先知道大小可以使用 with_capacity 避免频繁的内存分配和拷贝，提升性能
+    let _hm: HashMap<String, i32> = HashMap::with_capacity(3);
+
+    let mut gems = HashMap::new();
+    gems.insert("red gems", 1);
+    gems.insert("green gems", 2);
+    gems.insert("blue gems", 3);
+
+    let lang_list = vec![
+        ("English".to_string(), 1),
+        ("French".to_string(), 2),
+        ("German".to_string(), 3),
+    ];
+    let lang_map: HashMap<_, _> = lang_list.into_iter().collect();
+    dbg!(&lang_map);
+
+    let lan_name = "English".to_string();
+    let num: Option<&i32> = lang_map.get(&lan_name);
+    dbg!(num);
+
+    for (k, v) in &lang_map {
+        println!("{}:{} ", k, v);
+    }
+
+    let mut scores = HashMap::new();
+    scores.insert("Blue", 10);
+    // 覆盖已有的值
+    let old = scores.insert("Blue", 20);
+    assert_eq!(old, Some(10));
+    // 查询新插入的值
+    let new = scores.get("Blue");
+    assert_eq!(new, Some(&20));
+    // 查询Yellow对应的值，若不存在则插入新值
+    let v = scores.entry("Yellow").or_insert(5);
+    assert_eq!(*v, 5); // 不存在，插入5
+    // 查询Yellow对应的值，若不存在则插入新值
+    let v = scores.entry("Yellow").or_insert(50);
+    assert_eq!(*v, 5); // 已经存在，因此50没有插入
+}
+
+pub(crate) fn variables() {
+    println!("=== variables.rs beg ===");
+    basics();
+    num_use();
+    tuple_use();
+    array();
+    read_change_vec();
+    use_hashmap();
+    println!("=== variables.rs end ===");
 }
