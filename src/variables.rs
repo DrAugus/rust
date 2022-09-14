@@ -160,6 +160,12 @@ fn use_hashmap() {
         ("French".to_string(), 2),
         ("German".to_string(), 3),
     ];
+    let mut lang_map_normal = HashMap::new();
+    for t in &lang_list {
+        lang_map_normal.insert(&t.0, &t.1);
+    }
+    dbg!(lang_map_normal);
+
     let lang_map: HashMap<_, _> = lang_list.into_iter().collect();
     dbg!(&lang_map);
 
@@ -167,6 +173,7 @@ fn use_hashmap() {
     let num: Option<&i32> = lang_map.get(&lan_name);
     dbg!(num);
 
+    println!("Traversal lang_map");
     for (k, v) in &lang_map {
         println!("{}:{} ", k, v);
     }
@@ -185,7 +192,46 @@ fn use_hashmap() {
     // 查询Yellow对应的值，若不存在则插入新值
     let v = scores.entry("Yellow").or_insert(50);
     assert_eq!(*v, 5); // 已经存在，因此50没有插入
+
+    println!("Traversal scores");
+    for (k, v) in scores {
+        println!("{}:{} ", k, v);
+    }
+
+    // 在已有值的基础上更新
+    // 统计文本中词语出现的次数
+    let text_example = "hello my name is makabaka hello her name is wuxidixi";
+    let mut map = HashMap::new();
+    for word in text_example.split_whitespace() {
+        let count = map.entry(word).or_insert(0);
+        *count += 1;
+    }
+    dbg!(map);
 }
+
+fn type_conversion() {
+    let i8max = i8::MAX;
+    println!("i8 max {}", i8max);
+    let a = 3.1 as i8;
+    let b = 100_i8 as i32;
+    let c = 'a' as u8;
+    println!("{} {} {}", a, b, c);
+
+    let mut values: [i32; 2] = [1, 2];
+    let p1: *mut i32 = values.as_mut_ptr();
+    let first_address = p1 as usize;
+    let second_address = first_address + 4; // 4 == std::mem::size_of::<i32>()，i32类型占用4个字节
+    let p2 = second_address as *mut i32;
+    unsafe {
+        *p2 += 1;
+    }
+    println!("{} {} {:?}", first_address, second_address, values);
+    assert_eq!(values[1], 3);
+
+    // 其他类型转换暂不考虑
+    // https://course.rs/basic/converse.html#%E9%80%9A%E7%94%A8%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2
+}
+
 
 pub(crate) fn variables() {
     println!("=== variables.rs beg ===");
@@ -195,5 +241,6 @@ pub(crate) fn variables() {
     array();
     read_change_vec();
     use_hashmap();
+    type_conversion();
     println!("=== variables.rs end ===");
 }

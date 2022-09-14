@@ -3,6 +3,8 @@ use std::fmt::{Display};
 use std::hash::Hash;
 use std::ops::Add;
 
+mod exception;
+mod format_print;
 mod genshin;
 mod hello;
 mod ip;
@@ -413,4 +415,6 @@ fn main() {
     println!("A babe cat is called a {}", <Cat as Animal>::babe_name());
 
     variables::variables();
+
+    exception::exception();
 }

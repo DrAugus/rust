@@ -1,3 +1,5 @@
+use rand::{random, Rng};
+
 const MAX_DAMAGE: u64 = 21_474_836_473;
 const MAX_LEVEL: u8 = 90;
 
@@ -28,20 +30,31 @@ struct Stats {
 // Rust 不支持将某个结构体某个字段标记为可变。
 struct Character {
     id: i32,
-    name: i32,
-    rarity: i32,
+    name: String,
+    rarity: u8,
+    // max 5
     weapon: Weapons,
     stats: Stats,
 }
 
 impl Character {
-    fn new(id: i32, name: i32, rarity: i32, weapon: Weapons, stats: Stats) -> Character {
+    fn new(id: i32, name: String, rarity: u8, weapon: Weapons, stats: Stats) -> Character {
         Character {
             id,
             name,
             rarity,
             weapon,
             stats,
+        }
+    }
+    fn random() -> Character {
+        let mut rng = rand::thread_rng();
+        Character {
+            id: random::<i32>(),
+            name: "".to_string(),
+            rarity: rng.gen_range(0..5),
+            weapon: Weapons::Sword,
+            stats: Stats { hp: 2, atk: 2, def: 2 },
         }
     }
 }
@@ -57,7 +70,7 @@ pub(crate) fn character_test() {
         atk: 999,
         def: 999,
     };
-    let character1 = Character::new(1, 1, 1, Weapons::Sword, stats);
+    let character1 = Character::new(1, "jean".to_string(), 1, Weapons::Sword, stats);
     let character2 = Character {
         id: 3,
         name: character1.name,
@@ -71,4 +84,22 @@ pub(crate) fn character_test() {
     };// character2 无法再被使用
 
     println!("character3 {:#?}", character3);
+}
+
+
+mod genshin_info {
+    mod character {
+        fn get() {
+            super::super::Character::random();
+        }
+        fn name_info (){
+            
+        }
+    }
+
+    mod events {
+        fn banner() {}
+
+        fn trail_role() {}
+    }
 }
