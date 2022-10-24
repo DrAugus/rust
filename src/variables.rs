@@ -144,6 +144,12 @@ fn read_change_vec() {
         *i += 10
     }
     dbg!(v2);
+
+    let mut v3 = vec![1, 2, 3, 4, 5, 6, 7, 8, 9];
+    let v4: Vec<i32> = v3.iter().map(|num|{
+        num * 2
+    }).collect();
+    dbg!(v4);
 }
 
 fn use_hashmap() {
