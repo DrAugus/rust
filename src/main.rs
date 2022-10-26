@@ -391,10 +391,7 @@ fn main() {
     hello::greet_world();
     small_scale_chopper();
 
-    str::str_slice();
-    str::str_gone();
-    str::str_replace();
-    str::str_delete();
+    str::str();
     pattern_matching();
     loops();
 

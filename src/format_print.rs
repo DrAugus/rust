@@ -1,8 +1,7 @@
 // 本页代码大多来自 https://course.rs/basic/formatted-output.html
 // 当作字典查询使用
 
-
-fn pos() {
+fn _pos() {
     println!("{}{}", 1, 2); // =>"12"
     println!("{1}{0}", 1, 2); // =>"21"
     // => Alice, this is Bob. Bob, this is Alice
@@ -10,7 +9,7 @@ fn pos() {
     println!("{1}{}{0}{}", 1, 2); // => 2112
 }
 
-fn name() {
+fn _name() {
     println!("{argument}", argument = "test"); // => "test"
     println!("{name} {}", 1, name = 2); // => "2 1"
     println!("{a} {c} {b}", a = "a", b = 'b', c = 3); // => "a 3 b"
@@ -20,7 +19,7 @@ fn name() {
 mod format {
     mod width {
         // 字符串填充
-        fn string_fill() {
+        fn _string_fill() {
             //-----------------------------------
             // 以下全部输出 "Hello x    !"
             // 为"x"后面填充空格，补齐宽度5
@@ -38,7 +37,7 @@ mod format {
         }
 
         // 数字填充:符号和 0
-        fn number_fill() {
+        fn _number_fill() {
             // 宽度是5 => Hello     5!
             println!("Hello {:5}!", 5);
             // 显式的输出正号 => Hello +5!
@@ -49,7 +48,7 @@ mod format {
             println!("Hello {:05}!", -5);
         }
 
-        fn align() {
+        fn _align() {
             // 以下全部都会补齐5个字符的长度
             // 左对齐 => Hello x    !
             println!("Hello {:<5}!", "x");
@@ -64,7 +63,7 @@ mod format {
         }
     }
 
-    fn precision() {
+    fn _precision() {
         let v = 3.1415926;
         // 保留小数点后两位 => 3.14
         println!("{:.2}", v);
@@ -82,7 +81,7 @@ mod format {
         println!("Hello {:.*}!", 3, "abcdefg");
     }
 
-    fn binary() {
+    fn _binary() {
         // 二进制 => 0b11011!
         println!("{:#b}!", 27);
         // 八进制 => 0o33!
@@ -102,16 +101,16 @@ mod format {
     }
 
     // 指数
-    fn index() {
+    fn _index() {
         println!("{:2e}", 1000000000); // => 1e9
         println!("{:2E}", 1000000000); // => 1E9
     }
 
-    fn address() {
+    fn _address() {
         let v = vec![1, 2, 3];
         println!("{:p}", v.as_ptr()) // => 0x600002324050
     }
 }
 
 
-pub(crate) fn format_print() {}
+pub(crate) fn _format_print() {}

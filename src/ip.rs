@@ -1,5 +1,5 @@
 
-enum IpAddress {
+enum _IpAddress {
     Ipv4Address(String),
     Ipv6Address(String),
 }
@@ -9,7 +9,7 @@ fn check_ipv4_address(address: &String) -> ([u8; 4], bool) {
     if address.contains('.') { is_ipv4 = true }
     if !is_ipv4 { return ([0, 0, 0, 0], false); }
 
-    let mut temp = address;
+    let temp = address;
     let mut index_arr = [0; 3];
     let mut index = 0;
     for (i, char) in temp.chars().enumerate() {
@@ -19,7 +19,7 @@ fn check_ipv4_address(address: &String) -> ([u8; 4], bool) {
         }
     }
     dbg!(index_arr);
-    let mut value_ipv4 = [
+    let value_ipv4 = [
         temp[0..index_arr[0]].parse().unwrap(),
         temp[index_arr[0] + 1..index_arr[1]].parse().unwrap(),
         temp[index_arr[1] + 1..index_arr[2]].parse().unwrap(),
@@ -27,7 +27,7 @@ fn check_ipv4_address(address: &String) -> ([u8; 4], bool) {
     ];
     dbg!(value_ipv4);
     for i in value_ipv4 {
-        if i > 255 || i < 1 {
+        if i < 1 {
             ([0, 0, 0, 0], false);
         }
     }

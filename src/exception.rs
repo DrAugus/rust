@@ -6,16 +6,16 @@ use std::io::{self, Read};
 fn op_file() {
     let f = File::open("h.txt");
 
-    let f = match f {
+    let _f = match f {
         Ok(file) => file,
         Err(err) => match err.kind() {
             ErrorKind::NotFound => match File::create("h.txt") {
                 Ok(fc) => match fs::remove_file("h.txt") {
-                    Ok(rf) => {
+                    Ok(_okk) => {
                         println!("remove success");
                         fc
                     }
-                    Err(er) => panic!("couldn't remove"),
+                    Err(er) => panic!("couldn't remove {:?}", er),
                 },
                 Err(e) => panic!("Create failed: {:?}", e),
             },
@@ -47,7 +47,7 @@ fn read_username_from_file_1() -> Result<String, io::Error> {
 }
 
 fn read_username_from_file_2() -> Result<String, io::Error> {
-    let mut f = File::open("data/text.txt");
+    let f = File::open("data/text.txt");
     let mut s = String::new();
     f?.read_to_string(&mut s)?;
     dbg!(&s);

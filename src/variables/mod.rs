@@ -1,5 +1,6 @@
-use std::collections::HashMap;
 use num::Complex;
+
+mod hashmap;
 
 fn basics() {
     let mut x = 5;
@@ -70,8 +71,23 @@ fn basics() {
     let str_plus6 = String::from("r u ready? ");
     let str_res_plus = str_plus5 + &str_plus6;
     dbg!(str_res_plus);
+
+    let data = "Rust is great!".to_string();
+    get_char(&data);
+    string_uppercase(data);
+
 }
 
+fn get_char(data: &String) -> char {
+    data.chars().last().unwrap()
+}
+
+// Should take ownership
+fn string_uppercase(mut data: String) {
+    data = data.to_uppercase();
+
+    println!("{}", data);
+}
 
 fn num_use() {
     let a = Complex { re: 2.1, im: -1.2 };
@@ -89,6 +105,7 @@ fn tuple_use() {
 
 fn array() {
     let a = [3; 5];
+    let _vec_a = Vec::from(a);
     for i in 1..=5 {
         print!("{} ", i);
     }
@@ -145,74 +162,31 @@ fn read_change_vec() {
     }
     dbg!(v2);
 
-    let mut v3 = vec![1, 2, 3, 4, 5, 6, 7, 8, 9];
+    let v3 = Vec::new();
+    let v3 = fill_vec(&v3);
+    let v3 = fill_vec_2(v3);
     let v4: Vec<i32> = v3.iter().map(|num|{
         num * 2
     }).collect();
     dbg!(v4);
 }
 
-fn use_hashmap() {
-    // 若预先知道大小可以使用 with_capacity 避免频繁的内存分配和拷贝，提升性能
-    let _hm: HashMap<String, i32> = HashMap::with_capacity(3);
+fn fill_vec(vec: &Vec<i32>) -> Vec<i32> {
+    let mut vec = vec.clone();
 
-    let mut gems = HashMap::new();
-    gems.insert("red gems", 1);
-    gems.insert("green gems", 2);
-    gems.insert("blue gems", 3);
+    vec.push(22);
+    vec.push(44);
+    vec.push(66);
 
-    let lang_list = vec![
-        ("English".to_string(), 1),
-        ("French".to_string(), 2),
-        ("German".to_string(), 3),
-    ];
-    let mut lang_map_normal = HashMap::new();
-    for t in &lang_list {
-        lang_map_normal.insert(&t.0, &t.1);
-    }
-    dbg!(lang_map_normal);
+    vec
+}
 
-    let lang_map: HashMap<_, _> = lang_list.into_iter().collect();
-    dbg!(&lang_map);
+fn fill_vec_2(mut vec: Vec<i32>) -> Vec<i32> {
+    vec.push(22);
+    vec.push(44);
+    vec.push(66);
 
-    let lan_name = "English".to_string();
-    let num: Option<&i32> = lang_map.get(&lan_name);
-    dbg!(num);
-
-    println!("Traversal lang_map");
-    for (k, v) in &lang_map {
-        println!("{}:{} ", k, v);
-    }
-
-    let mut scores = HashMap::new();
-    scores.insert("Blue", 10);
-    // 覆盖已有的值
-    let old = scores.insert("Blue", 20);
-    assert_eq!(old, Some(10));
-    // 查询新插入的值
-    let new = scores.get("Blue");
-    assert_eq!(new, Some(&20));
-    // 查询Yellow对应的值，若不存在则插入新值
-    let v = scores.entry("Yellow").or_insert(5);
-    assert_eq!(*v, 5); // 不存在，插入5
-    // 查询Yellow对应的值，若不存在则插入新值
-    let v = scores.entry("Yellow").or_insert(50);
-    assert_eq!(*v, 5); // 已经存在，因此50没有插入
-
-    println!("Traversal scores");
-    for (k, v) in scores {
-        println!("{}:{} ", k, v);
-    }
-
-    // 在已有值的基础上更新
-    // 统计文本中词语出现的次数
-    let text_example = "hello my name is makabaka hello her name is wuxidixi";
-    let mut map = HashMap::new();
-    for word in text_example.split_whitespace() {
-        let count = map.entry(word).or_insert(0);
-        *count += 1;
-    }
-    dbg!(map);
+    vec
 }
 
 fn type_conversion() {
@@ -246,7 +220,7 @@ pub(crate) fn variables() {
     tuple_use();
     array();
     read_change_vec();
-    use_hashmap();
+    hashmap::use_hashmap();
     type_conversion();
     println!("=== variables.rs end ===");
 }

@@ -39,11 +39,11 @@ pub fn show_msg_all<T: SocialPlatform>(item1: &T, item2: &T) {
     println!("NEW MESSAGE: item1: {}, item2: {}", item1.send_msg(), item2.send_msg())
 }
 
-pub fn multi_bound_use1(item: &(impl SocialPlatform + Display)) {
+pub fn _multi_bound_use1(item: &(impl SocialPlatform + Display)) {
     println!("NEW MESSAGE: {}", item.send_msg())
 }
 
-pub fn multi_bound_use2<T: SocialPlatform + Display>(item: &T) {
+pub fn _multi_bound_use2<T: SocialPlatform + Display>(item: &T) {
     println!("NEW MESSAGE: {}", item.send_msg())
 }
 
@@ -148,7 +148,7 @@ impl SocialPlatform for QQ {
 
 // 使用特征作为函数参数
 // 特征约束(trait bound) T: SocialPlatform
-pub fn notify<T: SocialPlatform>(item: &T) {
+pub fn _notify<T: SocialPlatform>(item: &T) {
     println!("Breaking news! {}", item.send_msg());
 }
 

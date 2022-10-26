@@ -1,4 +1,4 @@
-pub(crate) fn str_slice() {
+fn str_slice() {
     println!("str_slice");
     let s = String::from("Bonne nuit");
     let len = s.len();
@@ -24,12 +24,12 @@ pub(crate) fn str_slice() {
     assert_eq!(slice_a, &[2, 3]);
 }
 
-fn str2string(s: &str) -> String {
+fn _str2string(s: &str) -> String {
     String::from(s)
     // s.to_string()
 }
 
-fn string2str(s: String) {
+fn _string2str(s: String) {
     let str1 = &s;
     let str2 = &s[..];
     let str3 = s.as_str();
@@ -38,7 +38,7 @@ fn string2str(s: String) {
 
 fn get_first_word(s: &String) -> &str { &s[..1] }
 
-pub(crate) fn str_gone() {
+fn str_gone() {
     let s = String::from("dar");
     takes_str_ownership(s);
     let x = 5;
@@ -76,7 +76,7 @@ fn str_add(str: &mut String) {
     println!("insert_str 'WOW' now: {}", str);
 }
 
-pub(crate) fn str_replace() {
+fn str_replace() {
     let s = String::from("I like u. u r my sunshine");
     let str = "I like u. u r my sunshine";
     let new_s = s.replace("u", "you");
@@ -90,7 +90,7 @@ pub(crate) fn str_replace() {
     dbg!(only_string);
 }
 
-pub(crate) fn str_delete() {
+fn str_delete() {
     // all of these only for string
     let mut str_pop = String::from("I like u. u r my sunshine.人.s");
     let p1 = str_pop.pop();
@@ -110,4 +110,40 @@ fn takes_str_ownership(str: String) {
 fn keep_str_ownership(str: String) -> String {
     println!("keep_str_ownership {}", str);
     str
+}
+
+fn str_trim() {
+    let str = " t o day    i  s a nice da   y   ";
+    println!("trim: {}", str.trim_matches(' '));
+}
+
+fn string_slice(arg: &str) {
+    println!("{}", arg);
+}
+fn string(arg: String) {
+    println!("{}", arg);
+}
+
+fn str_or_string() {
+    println!("str or string ======");
+    string_slice("blue");
+    string("red".to_string());
+    string(String::from("hi"));
+    string("rust is fun!".to_owned());
+    string("nice weather".into());
+    string(format!("Interpolation {}", "Station"));
+    string_slice(&String::from("abc")[0..1]);
+    string_slice("  hello there ".trim());
+    string("Happy Monday!".to_string().replace("Mon", "Tues"));
+    string("mY sHiFt KeY iS sTiCkY".to_lowercase());
+    println!("=========")
+}
+
+pub(crate) fn str() {
+    str_slice();
+    str_gone();
+    str_replace();
+    str_delete();
+    str_trim();
+    str_or_string();
 }
