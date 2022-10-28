@@ -11,3 +11,9 @@ pub(crate) fn largest<T: PartialOrd + Copy>(list: &[T]) -> T {
 pub(crate) fn add<T: std::ops::Add<Output=T>>(i: T, j: T) -> T {
     i + j
 }
+
+pub(crate) struct Point<T: std::ops::Add<T, Output=T>> {
+    pub(crate) x: T,
+    pub(crate) y: T,
+    pub(crate) z: T,
+}
