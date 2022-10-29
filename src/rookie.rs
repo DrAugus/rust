@@ -1,3 +1,29 @@
+fn _small_scale_chopper() {
+    let penguin_data = "\
+common name,length (cm)
+Little penguin,33
+Yellow-eyed penguin,65
+Fiordland penguin,60
+Invalid,data
+";
+    let records = penguin_data.lines();
+    for (i, record) in records.enumerate() {
+        if i == 0 || record.trim().len() == 0 {
+            continue;
+        }
+        let fields: Vec<_> = record.split(',').map(|field| field.trim()).collect();
+        if cfg!(debug_assertions) {
+            eprintln!("debug: {:?} -> {:?}", record, fields);
+        }
+
+        let name = fields[0];
+        if let Ok(length) = fields[1].parse::<f32>() {
+            println!("{}, {}cm", name, length)
+        }
+    }
+}
+
+
 fn _add_with_extra(x: i32, y: i32) -> i32 {
     let x = x + 1; // 语句
     let y = y + 5; // 语句
@@ -21,6 +47,7 @@ mod tests {
     #[test]
 
     fn rookie() {
+        _match_number(2);
         print!("222");
     }
 }

@@ -1,4 +1,3 @@
-
 enum _IpAddress {
     Ipv4Address(String),
     Ipv6Address(String),
@@ -58,4 +57,15 @@ pub(crate) fn ip_switch(address: &String, standard: bool) -> String {
     }
 
     return res;
+}
+
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_ip() {
+        assert_eq!(ip_switch(&"127.0.0.1".to_string(), true), "::7F00:0001".to_string());
+    }
 }

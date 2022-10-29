@@ -121,4 +121,13 @@ pub(crate) fn show_screen() {
 
 }
 
+#[cfg(test)]
+mod tests {
+    use super::*;
+    #[test]
+
+    fn features() {
+        show_screen();
+    }
+}
 

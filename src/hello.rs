@@ -1,4 +1,4 @@
-pub(crate) fn greet_world() {
+fn _greet_world() {
     let southern_germany = "Grüß Gott!";
     let chinese = "世界，你好！";
     let english = "World, hello!";
@@ -21,3 +21,5 @@ pub(crate) fn greet_world() {
         println!("{}", &region);
     }
 }
+
+

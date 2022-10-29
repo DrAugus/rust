@@ -49,7 +49,7 @@ pub fn _multi_bound_use2<T: SocialPlatform + Display>(item: &T) {
 
 // where 约束 不再展开
 
-pub(crate) fn random_use() {
+fn _random_use() {
     let mut rng = thread_rng();
 
     // Arrays (up to 32 elements): each element is generated sequentially;
@@ -165,22 +165,28 @@ impl QQ {
     }
 }
 
-pub(crate) fn generate_id() {
-    let new_qq = QQ::new("holy".to_string(),
-                         "UK".to_string(),
-                         "male".to_string(),
-                         "I am unstoppable".to_string(),
-                         "3/2".to_string());
-    let new_wx = WeChat::new("nick".to_string(),
-                             "Italian".to_string(),
-                             "female".to_string(),
-                             "gette".to_string());
+#[cfg(test)]
+mod tests {
+    use super::*;
 
-    println!("new_qq: {}", new_qq.social_info());
-    println!("new_wx: {}", new_wx.social_info());
+    #[test]
+    fn generate_id() {
+        let new_qq = QQ::new("holy".to_string(),
+                             "UK".to_string(),
+                             "male".to_string(),
+                             "I am unstoppable".to_string(),
+                             "3/2".to_string());
+        let new_wx = WeChat::new("nick".to_string(),
+                                 "Italian".to_string(),
+                                 "female".to_string(),
+                                 "gette".to_string());
 
-    show_msg(&new_qq);
-    show_msg(&new_wx);
+        println!("new_qq: {}", new_qq.social_info());
+        println!("new_wx: {}", new_wx.social_info());
 
-    show_msg_all(&new_qq, &new_qq);
+        show_msg(&new_qq);
+        show_msg(&new_wx);
+
+        show_msg_all(&new_qq, &new_qq);
+    }
 }

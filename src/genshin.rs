@@ -59,31 +59,37 @@ impl Character {
     }
 }
 
-pub(crate) fn character_test() {
-    println!(
-        "fn character_test() Genshin MAX_DAMAGE: {} MAX_LEVEL: {}",
-        MAX_DAMAGE, MAX_LEVEL
-    );
+#[cfg(test)]
+mod tests {
+    use super::*;
 
-    let stats = Stats {
-        hp: 999,
-        atk: 999,
-        def: 999,
-    };
-    let character1 = Character::new(1, "jean".to_string(), 1, Weapons::Sword, stats);
-    let character2 = Character {
-        id: 3,
-        name: character1.name,
-        rarity: character1.rarity,
-        weapon: character1.weapon,
-        stats: character1.stats,
-    };// character1 无法再被使用
-    let character3 = Character {
-        id: 2,
-        ..character2
-    };// character2 无法再被使用
+    #[test]
+    fn character_test() {
+        println!(
+            "fn character_test() Genshin MAX_DAMAGE: {} MAX_LEVEL: {}",
+            MAX_DAMAGE, MAX_LEVEL
+        );
 
-    println!("character3 {:#?}", character3);
+        let stats = Stats {
+            hp: 999,
+            atk: 999,
+            def: 999,
+        };
+        let character1 = Character::new(1, "jean".to_string(), 1, Weapons::Sword, stats);
+        let character2 = Character {
+            id: 3,
+            name: character1.name,
+            rarity: character1.rarity,
+            weapon: character1.weapon,
+            stats: character1.stats,
+        };// character1 无法再被使用
+        let character3 = Character {
+            id: 2,
+            ..character2
+        };// character2 无法再被使用
+
+        println!("character3 {:#?}", character3);
+    }
 }
 
 

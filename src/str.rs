@@ -120,6 +120,7 @@ fn str_trim() {
 fn string_slice(arg: &str) {
     println!("{}", arg);
 }
+
 fn string(arg: String) {
     println!("{}", arg);
 }
@@ -139,11 +140,18 @@ fn str_or_string() {
     println!("=========")
 }
 
-pub(crate) fn str() {
-    str_slice();
-    str_gone();
-    str_replace();
-    str_delete();
-    str_trim();
-    str_or_string();
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_str() {
+        str_slice();
+        str_gone();
+        str_replace();
+        str_delete();
+        str_trim();
+        str_or_string();
+    }
 }

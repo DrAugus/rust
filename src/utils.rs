@@ -17,3 +17,14 @@ pub(crate) struct Point<T: std::ops::Add<T, Output=T>> {
     pub(crate) y: T,
     pub(crate) z: T,
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_utils() {
+        let arr_find_largest = [1, 2, 3, 4, 9, 6, 1];
+        assert_eq!(largest(&arr_find_largest), 9);
+    }
+}
