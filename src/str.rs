@@ -1,3 +1,4 @@
+#[allow(dead_code)]
 fn str_slice() {
     println!("str_slice");
     let s = String::from("Bonne nuit");
@@ -35,9 +36,9 @@ fn _string2str(s: String) {
     let str3 = s.as_str();
     println!("str1: {}, str2: {}, str3: {}", str1, str2, str3);
 }
-
+#[allow(dead_code)]
 fn get_first_word(s: &String) -> &str { &s[..1] }
-
+#[allow(dead_code)]
 fn str_gone() {
     let s = String::from("dar");
     takes_str_ownership(s);
@@ -58,11 +59,11 @@ fn str_gone() {
     let mut alive_mut_s = String::from("love");
     str_add(&mut alive_mut_s);
 }
-
+#[allow(dead_code)]
 fn cal_length(s: &String) -> (&String, usize) {
     (s, s.len())
 }
-
+#[allow(dead_code)]
 fn str_add(str: &mut String) {
     println!("str_add source: {}", str);
     str.push_str(" Bonne nuit");
@@ -75,7 +76,7 @@ fn str_add(str: &mut String) {
     str.insert_str(str.len(), "WOW");
     println!("insert_str 'WOW' now: {}", str);
 }
-
+#[allow(dead_code)]
 fn str_replace() {
     let s = String::from("I like u. u r my sunshine");
     let str = "I like u. u r my sunshine";
@@ -89,7 +90,7 @@ fn str_replace() {
     only_string.replace_range(2..only_string.len(), "...");
     dbg!(only_string);
 }
-
+#[allow(dead_code)]
 fn str_delete() {
     // all of these only for string
     let mut str_pop = String::from("I like u. u r my sunshine.人.s");
@@ -102,29 +103,29 @@ fn str_delete() {
     let d2 = str_del.truncate(6);
     dbg!(d1,d2,str_del);
 }
-
+#[allow(dead_code)]
 fn takes_str_ownership(str: String) {
     println!("takes_str_ownership {}", str);
 }
-
+#[allow(dead_code)]
 fn keep_str_ownership(str: String) -> String {
     println!("keep_str_ownership {}", str);
     str
 }
-
+#[allow(dead_code)]
 fn str_trim() {
     let str = " t o day    i  s a nice da   y   ";
     println!("trim: {}", str.trim_matches(' '));
 }
-
+#[allow(dead_code)]
 fn string_slice(arg: &str) {
     println!("{}", arg);
 }
-
+#[allow(dead_code)]
 fn string(arg: String) {
     println!("{}", arg);
 }
-
+#[allow(dead_code)]
 fn str_or_string() {
     println!("str or string ======");
     string_slice("blue");

@@ -30,30 +30,35 @@ impl Pilot for Human {
 }
 
 impl Wizard for Human {
+    #[allow(dead_code)]
     fn fly(&self) {
         dbg!("Up!");
     }
 }
 
 impl Human {
+    #[allow(dead_code)]
     fn fly(&self) {
         dbg!("*waving arms furiously*");
     }
 }
 
 trait Animal {
+    #[allow(dead_code)]
     fn babe_name() -> String;
 }
 
 struct Cat;
 
 impl Cat {
+    #[allow(dead_code)]
     fn babe_name() -> String {
         "babe".to_string()
     }
 }
 
 impl Animal for Cat {
+    #[allow(dead_code)]
     fn babe_name() -> String {
         "meow".to_string()
     }

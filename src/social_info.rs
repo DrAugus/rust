@@ -1,6 +1,6 @@
 use std::fmt::Display;
 use rand::{random, Rng, thread_rng};
-
+#[allow(dead_code)]
 // 定义特征
 pub trait SocialPlatform {
     fn social_info(&self) -> String;
@@ -8,7 +8,7 @@ pub trait SocialPlatform {
         format!("holy shit")
     }
 }
-
+#[allow(dead_code)]
 pub struct WeChat {
     pub nickname: String,
     pub wx_id: String,
@@ -20,20 +20,22 @@ pub struct WeChat {
 
 // 为类型实现特征
 impl SocialPlatform for WeChat {
+    #[allow(dead_code)]
     fn social_info(&self) -> String {
         format!("nickname: {}, wx_id: {}, district: {}, gender: {}, about: {}",
                 self.nickname, self.wx_id, self.district, self.gender, self.about)
     }
+    #[allow(dead_code)]
     fn send_msg(&self) -> String {
         format!("msg by {}", self.nickname)
     }
 }
-
+#[allow(dead_code)]
 // 使用特征作为函数参数
 pub fn show_msg(item: &impl SocialPlatform) {
     println!("NEW MESSAGE: {}", item.send_msg())
 }
-
+#[allow(dead_code)]
 // 特征约束(trait bound) T: SocialPlatform
 pub fn show_msg_all<T: SocialPlatform>(item1: &T, item2: &T) {
     println!("NEW MESSAGE: item1: {}, item2: {}", item1.send_msg(), item2.send_msg())
@@ -60,7 +62,7 @@ fn _random_use() {
 
     dbg!(arr2);
 }
-
+#[allow(dead_code)]
 // 仅包含数字0-9和字母a-z 长度36
 fn random_string(len: usize) -> String {
 
@@ -92,7 +94,7 @@ fn random_string(len: usize) -> String {
     dbg!(&res);
     res.to_string()
 }
-
+#[allow(dead_code)]
 fn ascii2string(v: u8) -> String {
     let supper_alpha = [
         "A", "B", "C", "D", "E", "F", "G",
@@ -119,6 +121,7 @@ fn ascii2string(v: u8) -> String {
 }
 
 impl WeChat {
+    #[allow(dead_code)]
     fn new(nickname: String, district: String, gender: String, about: String) -> WeChat {
         WeChat {
             nickname,
@@ -129,7 +132,7 @@ impl WeChat {
         }
     }
 }
-
+#[allow(dead_code)]
 pub struct QQ {
     pub nickname: String,
     pub qq_number: u32,
@@ -140,6 +143,7 @@ pub struct QQ {
 }
 
 impl SocialPlatform for QQ {
+    #[allow(dead_code)]
     fn social_info(&self) -> String {
         format!("nickname: {}, qq_number: {}, district: {}, gender: {}, about: {}, birthday: {}",
                 self.nickname, self.qq_number, self.district, self.gender, self.about, self.birthday)
@@ -153,6 +157,7 @@ pub fn _notify<T: SocialPlatform>(item: &T) {
 }
 
 impl QQ {
+    #[allow(dead_code)]
     fn new(nickname: String, district: String, gender: String, about: String, birthday: String) -> QQ {
         QQ {
             nickname,

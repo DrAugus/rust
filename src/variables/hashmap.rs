@@ -1,5 +1,5 @@
 use std::collections::HashMap;
-
+#[allow(dead_code)]
 #[derive(Debug)]
 // A structure to store team name and its goal details.
 struct Team {
@@ -7,7 +7,7 @@ struct Team {
     goals_scored: u8,
     goals_conceded: u8,
 }
-
+#[allow(dead_code)]
 fn build_scores_table(results: String) -> HashMap<String, Team> {
     // The name of the team is the key and its associated struct is the value.
     let mut scores: HashMap<String, Team> = HashMap::new();
@@ -33,6 +33,7 @@ fn build_scores_table(results: String) -> HashMap<String, Team> {
     scores
 }
 
+#[allow(dead_code)]
 fn get_results() -> String {
     let results = "".to_string()
         + "England,France,4,2\n"
@@ -42,6 +43,7 @@ fn get_results() -> String {
     results
 }
 
+#[allow(dead_code)]
 fn build_scores() {
     let scores = build_scores_table(get_results());
     for (k, v) in scores {
@@ -50,6 +52,7 @@ fn build_scores() {
     }
 }
 
+#[allow(dead_code)]
 #[derive(Hash, PartialEq, Eq, Debug)]
 enum Fruit {
     Apple,
@@ -59,6 +62,7 @@ enum Fruit {
     Pineapple,
 }
 
+#[allow(dead_code)]
 fn fruit_basket(basket: &mut HashMap<Fruit, u32>) {
     let fruit_kinds = vec![
         Fruit::Apple,
@@ -75,6 +79,7 @@ fn fruit_basket(basket: &mut HashMap<Fruit, u32>) {
     }
 }
 
+#[allow(dead_code)]
 fn get_fruit_basket() -> HashMap<Fruit, u32> {
     let mut basket = HashMap::<Fruit, u32>::new();
     basket.insert(Fruit::Apple, 4);
@@ -84,6 +89,7 @@ fn get_fruit_basket() -> HashMap<Fruit, u32> {
     basket
 }
 
+#[allow(dead_code)]
 pub(crate) fn use_hashmap() {
     // 若预先知道大小可以使用 with_capacity 避免频繁的内存分配和拷贝，提升性能
     let _hm: HashMap<String, i32> = HashMap::with_capacity(3);

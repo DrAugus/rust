@@ -3,7 +3,7 @@ use num::Complex;
 mod array;
 mod enums;
 mod hashmap;
-
+#[allow(dead_code)]
 fn basics() {
     let mut x = 5;
     println!("The value of x is: {}", x);
@@ -77,34 +77,33 @@ fn basics() {
     let data = "Rust is great!".to_string();
     get_char(&data);
     string_uppercase(data);
-
 }
-
+#[allow(dead_code)]
 fn get_char(data: &String) -> char {
     data.chars().last().unwrap()
 }
-
+#[allow(dead_code)]
 // Should take ownership
 fn string_uppercase(mut data: String) {
     data = data.to_uppercase();
 
     println!("{}", data);
 }
-
+#[allow(dead_code)]
 fn num_use() {
     let a = Complex { re: 2.1, im: -1.2 };
     let b = Complex::new(11.1, 22.2);
     let res = a + b;
     println!("{} + {}i", res.re, res.im);
 }
-
+#[allow(dead_code)]
 fn tuple_use() {
     let tup: (i32, f64, u8) = (500, 6.4, 1);
     let (x, y, z) = tup;
     println!("x: {}, y: {}, z: {}", x, y, z);
     println!("tup0: {}, tup1: {}, tup2: {}", tup.0, tup.1, tup.2);
 }
-
+#[allow(dead_code)]
 fn type_conversion() {
     let i8max = i8::MAX;
     println!("i8 max {}", i8max);
@@ -128,13 +127,18 @@ fn type_conversion() {
     // https://course.rs/basic/converse.html#%E9%80%9A%E7%94%A8%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2
 }
 
+#[cfg(test)]
+mod tests {
+    use super::*;
 
-pub(crate) fn variables() {
-    println!("=== variables.rs beg ===");
-    basics();
-    num_use();
-    tuple_use();
-    hashmap::use_hashmap();
-    type_conversion();
-    println!("=== variables.rs end ===");
+    #[test]
+    fn variables() {
+        println!("=== variables.rs beg ===");
+        basics();
+        num_use();
+        tuple_use();
+        hashmap::use_hashmap();
+        type_conversion();
+        println!("=== variables.rs end ===");
+    }
 }

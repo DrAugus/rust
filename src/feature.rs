@@ -1,6 +1,6 @@
 // 各种特性
 
-
+#[allow(dead_code)]
 struct Circle {
     x: f64,
     y: f64,
@@ -31,7 +31,7 @@ pub struct Button {
 impl Draw for Button {
     fn draw(&self) {}
 }
-
+#[allow(dead_code)]
 struct SelectBox {
     width: u32,
     height: u32,
@@ -66,6 +66,7 @@ pub struct GenericScreen<T: Draw> {
 }
 
 impl<T> GenericScreen<T> where T: Draw {
+    #[allow(dead_code)]
     pub fn run(&self) {
         for component in self.components.iter() {
             component.draw();
@@ -84,11 +85,11 @@ impl Draw for f64 {
         println!("f64 {}", *self);
     }
 }
-
+#[allow(dead_code)]
 fn draw1(x: Box<dyn Draw>) { x.draw(); }
-
+#[allow(dead_code)]
 fn draw2(x: &dyn Draw) { x.draw(); }
-
+#[allow(dead_code)]
 pub(crate) fn show_screen() {
 
     let draw_x = 1.1f64;

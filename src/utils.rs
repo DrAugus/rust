@@ -1,3 +1,4 @@
+#[allow(dead_code)]
 pub(crate) fn largest<T: PartialOrd + Copy>(list: &[T]) -> T {
     let mut largest = list[0];
     for &item in list.iter() {
@@ -7,11 +8,11 @@ pub(crate) fn largest<T: PartialOrd + Copy>(list: &[T]) -> T {
     }
     largest
 }
-
+#[allow(dead_code)]
 pub(crate) fn add<T: std::ops::Add<Output=T>>(i: T, j: T) -> T {
     i + j
 }
-
+#[allow(dead_code)]
 pub(crate) struct Point<T: std::ops::Add<T, Output=T>> {
     pub(crate) x: T,
     pub(crate) y: T,

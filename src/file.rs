@@ -1,12 +1,12 @@
 use std::fmt;
 use std::fmt::{Display};
-
+#[allow(dead_code)]
 #[derive(Debug, PartialEq)]
 enum FileState {
     Open,
     Closed,
 }
-
+#[allow(dead_code)]
 #[derive(Debug)]
 struct File {
     name: String,
@@ -30,6 +30,7 @@ impl Display for File {
 }
 
 impl File {
+    #[allow(dead_code)]
     fn new(name: String) -> File {
         File {
             name,

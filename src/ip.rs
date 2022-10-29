@@ -2,7 +2,7 @@ enum _IpAddress {
     Ipv4Address(String),
     Ipv6Address(String),
 }
-
+#[allow(dead_code)]
 fn check_ipv4_address(address: &String) -> ([u8; 4], bool) {
     let mut is_ipv4 = false;
     if address.contains('.') { is_ipv4 = true }
@@ -32,7 +32,7 @@ fn check_ipv4_address(address: &String) -> ([u8; 4], bool) {
     }
     (value_ipv4, true)
 }
-
+#[allow(dead_code)]
 pub(crate) fn ip_switch(address: &String, standard: bool) -> String {
     let check_ipv4 = check_ipv4_address(address);
     let is_ipv4 = check_ipv4.1;

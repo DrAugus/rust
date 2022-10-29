@@ -1,3 +1,4 @@
+#[allow(dead_code)]
 fn array() {
     let a = [3; 5];
     let _vec_a = Vec::from(a);
@@ -32,7 +33,7 @@ fn array() {
         println!("this is China!")
     }
 }
-
+#[allow(dead_code)]
 fn read_change_vec() {
     // 若预先知道大小可以使用 with_capacity 避免频繁的内存分配和拷贝，提升性能
     let _v: Vec<i32> = Vec::with_capacity(3);
@@ -65,7 +66,7 @@ fn read_change_vec() {
     }).collect();
     dbg!(v4);
 }
-
+#[allow(dead_code)]
 fn fill_vec(vec: &Vec<i32>) -> Vec<i32> {
     let mut vec = vec.clone();
 
@@ -75,7 +76,7 @@ fn fill_vec(vec: &Vec<i32>) -> Vec<i32> {
 
     vec
 }
-
+#[allow(dead_code)]
 fn fill_vec_2(mut vec: Vec<i32>) -> Vec<i32> {
     vec.push(22);
     vec.push(44);

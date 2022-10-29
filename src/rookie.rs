@@ -23,6 +23,29 @@ Invalid,data
     }
 }
 
+fn _greet_world() {
+    let southern_germany = "Grüß Gott!";
+    let chinese = "世界，你好！";
+    let english = "World, hello!";
+    let italian = "mondo, Ciao!";
+    let french = "Le monde, Bonjour!";
+    let russian = "мир, Привет!";
+    let korean = "세계, 안녕하세요!";
+    let german = "Welt, Hallo!";
+    let regions = [
+        southern_germany,
+        chinese,
+        english,
+        italian,
+        french,
+        russian,
+        korean,
+        german,
+    ];
+    for region in regions {
+        println!("{}", &region);
+    }
+}
 
 fn _add_with_extra(x: i32, y: i32) -> i32 {
     let x = x + 1; // 语句
@@ -30,8 +53,9 @@ fn _add_with_extra(x: i32, y: i32) -> i32 {
     x + y // 表达式 表达式不能包含分号 加分号就变成语句了
 }
 
+#[allow(dead_code)]
 // In addition to number, you can also match char
-fn _match_number(x: i32) {
+fn match_number(x: i32) {
     match x {
         0 => println!("zero"),
         1..=9 if x < 5 => println!("one through 4"),
@@ -44,10 +68,9 @@ fn _match_number(x: i32) {
 #[cfg(test)]
 mod tests {
     use super::*;
-    #[test]
 
+    #[test]
     fn rookie() {
-        _match_number(2);
-        print!("222");
+        match_number(2);
     }
 }

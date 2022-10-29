@@ -1,3 +1,4 @@
+#[allow(dead_code)]
 // 为Point结构体派生Debug特征，用于格式化输出
 #[derive(Debug)]
 struct Point<T: std::ops::Add<T, Output=T>> {
@@ -5,9 +6,9 @@ struct Point<T: std::ops::Add<T, Output=T>> {
     y: T,
     z: T,
 }
-
+#[allow(dead_code)]
 struct Color(u8, u8, u8);
-
+#[allow(dead_code)]
 #[derive(Debug)]
 enum Direction {
     East,
@@ -21,6 +22,7 @@ enum Direction {
 }
 
 impl Direction {
+    #[allow(dead_code)]
     const DIRECTION: [Self; 8] = [
         Direction::East,
         Direction::West,
@@ -38,14 +40,14 @@ fn _not_invoke() {
         print!("{:?}", i);
     }
 }
-
+#[allow(dead_code)]
 enum Action {
     Say(String),
     MoveTo(Point<f32>, Point<f32>),
     ChangeColor(Color),
     Loading(bool),
 }
-
+#[allow(dead_code)]
 fn op_action(op: Action) {
     match op {
         Action::Say(s) => println!("{}", s),
@@ -62,7 +64,7 @@ fn op_action(op: Action) {
     }
 }
 
-
+#[allow(dead_code)]
 enum Message {
     ChangeColor((u8, u8, u8)),
     Echo(String),
@@ -70,7 +72,7 @@ enum Message {
     Quit,
 }
 
-
+#[allow(dead_code)]
 struct State {
     color: (u8, u8, u8),
     position: Point<i32>,
@@ -78,22 +80,23 @@ struct State {
 }
 
 impl State {
+    #[allow(dead_code)]
     fn change_color(&mut self, color: (u8, u8, u8)) {
         self.color = color;
     }
-
+    #[allow(dead_code)]
     fn quit(&mut self) {
         self.quit = true;
     }
-
+    #[allow(dead_code)]
     fn echo(&self, s: String) {
         println!("{}", s);
     }
-
+    #[allow(dead_code)]
     fn move_position(&mut self, p: Point<i32>) {
         self.position = p;
     }
-
+    #[allow(dead_code)]
     fn process(&mut self, message: Message) {
         match message {
             Message::ChangeColor(c) => self.change_color(c),
@@ -116,7 +119,7 @@ mod tests {
             println!("hit! {}", s);
         }
         // matches 暂不展开
-    
+
         let actions = [
             Action::Say("hi".to_string()),
             Action::MoveTo(Point { x: 2.0, y: 3.0, z: 1.0 },
