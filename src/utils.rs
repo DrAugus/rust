@@ -29,3 +29,8 @@ mod tests {
         assert_eq!(largest(&arr_find_largest), 9);
     }
 }
+
+
+pub fn _factorial(num: u64) -> u64 {
+    (1..=num).product()
+}
